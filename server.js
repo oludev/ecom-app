@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, './public')));
 // Express session
 app.use(session({
   key: 'session_cookie_name',
-  secret: process.env.SESSION_SECRET || 'frozenfoodpass',
+  secret: process.env.SESSION_SECRET || 'novelecomapp',
   resave: false,
   saveUninitialized: false,
   store: sessionStore,
