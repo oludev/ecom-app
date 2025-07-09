@@ -1,0 +1,61 @@
+{{> adminHeader}}
+<div class="dashboard-container">
+  <div class="order-cards">
+    <div class="order-card">
+      <h3>Orders Today</h3>
+      <p>{{ordersToday}}</p>
+    </div>
+    <div class="order-card">
+      <h3>Orders This Week</h3>
+      <p>{{ordersThisWeek}}</p>
+    </div>
+    <div class="order-card">
+      <h3>Orders This Month</h3>
+      <p>{{ordersThisMonth}}</p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <h2>Orders Overview</h2>
+    <canvas id="ordersChart" width="600" height="300"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('ordersChart').getContext('2d');
+  const ordersChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Today', 'This Week', 'This Month'],
+      datasets: [{
+        label: 'Orders',
+        data: [{{ordersToday}}, {{ordersThisWeek}}, {{ordersThisMonth}}],
+        backgroundColor: ['#3498db', '#2ecc71', '#e67e22'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/dashboard.js"></script>
+
+{{> adminFooter}}
+
+
+

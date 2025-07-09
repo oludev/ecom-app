@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <h2>Edit Profile</h2>
+  <form action="/admin/profile/update" method="POST" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label for="name" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="name" name="name" value="{{admin.name}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{admin.username}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{admin.email}}" required>
+    </div>
+
+    <button type="submit" class="btn w-50 btn-success my-2">Update</button>
+    <a href="/admin/profile" class="btn btn-md w-50 btn-light ms-2">Cancel</a>
+  </form>
+</div>

@@ -1,0 +1,128 @@
+{{> mainHeader}}
+{{> navbar}}
+
+<h2 class="myacct">Home / Notifications</h2>
+<hr>
+
+<div class="container-fluid mt-4 text-center" style="min-height: 70vh">
+  <h2 class="text-center w-100">Your Notifications</h2>
+
+  {{#if notifications.length}}
+    <div class="text-right mb-3">
+      <button class="btn btn-danger btn-sm" id="clearNotifBtn">
+        <span><i class="bi bi-trash3"></i> </span>Clear All Notifications
+      </button>
+    </div>
+
+    <ul class="list-group mt-3">
+      {{#each notifications}}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{title}}</strong><br>
+            <small>{{message}}</small><br>
+            <small class="text-muted">{{created_at}}</small>
+          </div>
+          {{#unless is_read}}
+            <span class="badge bg-success">New</span>
+          {{/unless}}
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p class="mt-3">You have no notifications at the moment.</p>
+    <a href="/shop" class="btn btn-success mt-4">Back to Shop</a>
+  {{/if}}
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  window.user = {
+    id: "{{user.id}}",
+    name: "{{user.name}}",
+    email: "{{user.email}}",
+    phone: "{{user.phone}}",
+    firstname: "{{user.firstname}}",
+    lastname: "{{user.lastname}}",
+    username: "{{user.username}}"
+  };
+
+  const socket = io();
+  
+
+  const userNotificationLink = document.getElementById('userNotificationLink');
+  const userNotificationBadge = userNotificationLink?.querySelector('.badge');
+
+  socket.on(`notification_user_${window.user.id}`, function (data) {
+    console.log("User notification event received:", data);
+
+    if (userNotificationBadge) {
+      if (data.unreadCount > 0) {
+        userNotificationBadge.textContent = data.unreadCount;
+        userNotificationBadge.style.display = 'inline-block';
+      } else {
+        userNotificationBadge.textContent = '';
+        userNotificationBadge.style.display = 'none';
+      }
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'alert alert-info alert-dismissible fade show custom-toast';
+    toast.innerHTML = `
+      <strong>New Notification!</strong><br>
+      ${data.message || 'You have a new notification.'}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+  });
+</script>
+
+
+<script>
+  document.getElementById('clearNotifBtn')?.addEventListener('click', async () => {
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will clear all your notifications.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, clear all!',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        const response = await axios.post('/api/user/notifications/clear');
+        if (response.data.success) {
+          await Swal.fire({
+            icon: 'success',
+            title: 'Cleared!',
+            text: 'All notifications have been removed.',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          location.reload();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Could not clear notifications.'
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops!',
+          text: 'Something went wrong. Please try again.'
+        });
+      }
+    }
+  });
+</script>

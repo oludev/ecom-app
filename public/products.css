@@ -1,0 +1,31 @@
+.content {
+  padding: 2rem;
+}
+
+.product-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-form input,
+.product-form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.product-table th {
+  background-color: #f4f4f4;
+  text-align: left;
+}

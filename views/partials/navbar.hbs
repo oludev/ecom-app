@@ -1,0 +1,150 @@
+<nav class="navbar navbar-expand-md bg-white navbar-one fixed-top">
+    <a href="/"><img src="/images/ff-logo.png" alt="" width="150px" height="80px"></a>
+    <div>
+        <input type="text" class="searchbox" placeholder="I'm searching for..." id="myInput" onkeyup="myFunction()" name="search" title="Type in a name">
+        <span><img src="/images/search.png" id="input_img" style="cursor:pointer"></span>
+        <ul id="buylist">
+            <li><a href="">Full Chicken</a></li>
+            <li><a href="">Turkey Wings</a></li>
+            <li><a href="">Smoked Fish</a></li>
+            <li><a href="">Dried Snails</a></li>
+            <li><a href="">Ponmo</a></li>
+            <li><a href="">Cowleg</a></li>
+            <li><a href="">Natural Herbs</a></li>
+            <li><a href="">Dry Chili Pepper</a></li>
+            <li><a href="">Jekanmo Herbal</a></li>
+            <li><a href="">Kolaq Alagbo</a></li>
+            <li><a href="">Origin Sachet</a></li>
+            <li><a href="">Action Bitters</a></li>
+        </ul>
+    </div>
+    <div class="cart">
+        <a href="/cart"><span class="nav-link material-icons" name="cart">shopping_cart</span></a>
+        <span class="my-cart-badge">0</span>
+    </div>
+    <div class="mywishlist">
+        <a href="/wishlist"><span class="nav-link material-icons">favorite</span></a>
+        <span class="wishlist-count my-wishlist badge">0</span>
+    </div>
+    <div class="">
+        {{#if user}}
+            <a href="/notifications" id="userNotificationLink"> {{!-- ADDED ID HERE --}}
+                <span class="nav-link material-icons">notifications</span>
+                {{!-- Display badge only if unreadCount is greater than 0 --}}
+                {{#if user.unreadCount}}
+                    <span class="bellcount badge">{{user.unreadCount}}</span>
+                {{/if}}
+            </a>
+        {{else if admin}}
+            <a href="/admin/notifications">
+                <span class="nav-link material-icons">notifications</span>
+                {{!-- Display badge only if unreadCount is greater than 0 --}}
+                {{#if admin.unreadCount}}
+                    <span class="badge badge-danger">{{admin.unreadCount}}</span>
+                {{/if}}
+            </a>
+        {{else}}
+            <a href="/notifications">
+                <span class="nav-link material-icons">notifications</span>
+            </a>
+        {{/if}}
+    </div>
+    <div id="wrapper" class="toggle navbar-toggler  d-md-block" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="circle icon" onclick="myFnc(this)">
+            <span class="top line"></span>
+            <span class="middle line"></span>
+            <span class="last line"></span>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="ml-auto" id="sidebar">
+            <li class="nav-item">
+                <a class="nav-link" href="/"><i class="fa-solid fa-house-chimney px-1"></i> Home</a>
+            </li>
+            {{#if user}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop"><i class="fa-solid fa-shop px-1"></i> Shop</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link btn focus-visible" href="#" role="button" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user px-1"></i>
+                        {{user.firstname}} <i class="fa-solid fa-chevron-down px-1"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item user" href="/profile"><i class="fa-solid fa-user px-1"></i> Profile</a>
+                        <a class="dropdown-item user wishlist" href="/wishlist"><i class="fa-solid fa-hand-holding-heart px-1"></i> Wishlist</a>
+                        <a class="dropdown-item user" href="/orders"><i class="fa-solid fa-box px-1"></i> Orders</a>
+                        <a class="dropdown-item user" href="/cart"><i class="fa-solid fa-cart-shopping px-1"></i> My cart</a>
+                        <a class="dropdown-item user" href="/notifications"><i class="fa-solid fa-bell px-1"></i> Notifications
+                            {{#if user.unreadCount}}
+                                <span class="badge badge-danger">{{user.unreadCount}}</span>
+                            {{/if}}</a>
+                        <hr>
+                        <a class="dropdown-item user" href="/auth/logout" id="acctlogin"><i class="fa-solid fa-right-from-bracket px-1"></i> Logout</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-phone-flip px-1"></i> Call Us Now</a>
+                </li>
+            {{else if admin}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard"><i class="fa-solid fa-shop px-1"></i> Admin Dashboard</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link btn focus-visible" href="#" role="button" id="admin-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user px-1"></i>
+                        {{admin.firstname}} <i class="fa-solid fa-chevron-down px-1"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="admin-dropdown">
+                        <a class="dropdown-item admin" href="/admin/profile"><i class="fa-solid fa-user px-1"></i> Profile</a>
+                        <a class="dropdown-item admin" href="/admin/notifications"><i class="fa-solid fa-bell px-1"></i> Notifications {{#if admin.unreadCount}}
+                            <span class="badge badge-danger">{{admin.unreadCount}}</span>
+                        {{/if}}</a>
+                        <hr>
+                        <a class="dropdown-item admin" href="/admin/logout" id="adminlogout"><i class="fa-solid fa-right-from-bracket px-1"></i> Logout</a>
+                    </div>
+                </li>
+            {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop"><i class="fa-solid fa-shop px-1"></i> Shop</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link btn focus-visible" href="#" role="button" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user px-1"></i>
+                        Account <i class="fa-solid fa-chevron-down px-1"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item user" href="/wishlist"><i class="fa-solid fa-hand-holding-heart px-1"></i> Wishlist</a>
+                        <a class="dropdown-item user" href="/orders" target="_self"><i class="fa-solid fa-box px-1"></i> Orders</a>
+                        <a class="dropdown-item user" href="/cart"><i class="fa-solid fa-cart-shopping px-1"></i> My Cart</a>
+                        <a class="dropdown-item user" href="/notifications"><i class="fa-solid fa-bell px-1"></i> Notifications</a>
+                        <hr>
+                        <a class="dropdown-item user" href="/login" id="acctlogin"><i class="fa-solid fa-right-to-bracket"></i> Login | Signup</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-phone-flip px-1"></i> Call Us Now</a>
+                </li>
+            {{/if}}
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg navbar-bg-dark navbar-two sticky-top">
+    <div class="container fooditems d-flex justify-content-center">
+        <div class="row">
+            <div class="col-12">
+                <ul class="list-inline">
+                    <li class="list-inline-item text-white mx-3">Chicken</li>
+                    <li class="list-inline-item text-white mx-3">Turkey</li>
+                    <li class="list-inline-item text-white mx-3">Ponmo</li>
+                    <li class="list-inline-item text-white mx-3">Dried Snails</li>
+                    <li class="list-inline-item dropdown">
+                        <div class="dropdown">
+                            <a class="btn focus-visible" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Other products <i class="fa-solid fa-caret-down px-1"></i></a>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item others" href="#">Herbs</a>
+                                <a class="dropdown-item others" href="#">Alcoholic bitters</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

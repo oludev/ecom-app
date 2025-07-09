@@ -1,0 +1,68 @@
+{{> adminHeader}}
+<script src="moment.js"></script>
+
+<h2>Customer Orders</h2>
+<div class="text-right mb-3">
+  <button class="btn btn-danger btn-sm" id="clearAdminOrdersBtn" onclick="clearAdminOrders()">
+    <i class="bi bi-trash3"></i> Clear All Orders
+  </button>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Customer</th>
+      <th>Products</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.customer_name}}</td>
+        <td>
+          {{#if this.products}}
+            {{this.products}}
+          {{else}}
+            <em>None</em>
+          {{/if}}
+        </td>
+        <td>
+          {{#if this.amount}}
+            BGN {{this.amount}}
+          {{else}}
+            ₦0
+          {{/if}}
+        </td>
+        <td>{{this.status}}</td>
+        <td>{{this.created_at}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{> adminFooter}}
+
+<script>
+function clearAdminOrders() {
+  if (!confirm('Are you sure you want to delete all orders?')) return;
+
+  axios.post('/admin/api/orders/clear')
+    .then(res => {
+      if (res.data.success) {
+        alert('All orders cleared successfully!');
+        location.reload();
+      } else {
+        alert('Failed to clear orders.');
+      }
+    })
+    .catch(err => {
+      console.error('Clear Orders Error:', err);
+      alert('An error occurred while clearing orders.');
+    });
+}
+</script>

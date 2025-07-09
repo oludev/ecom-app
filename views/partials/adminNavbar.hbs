@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-sm bg-light d-flex fixed-top">
+  <span id="hamburgerBtn"><img src="/images/menu.svg" alt=""></span>
+
+  <ul class="navbar-nav ml-auto align-items-center">
+
+    <li class="nav-item position-relative mr-3">
+      <a href="/admin/notifications" class="nav-link">
+        <i class="bi bi-bell-fill" style="font-size: 1rem; color: #000;"></i>
+        {{#if user.unreadCount}}
+          <span class="badge badge-danger">{{user.unreadCount}}</span> 
+        {{/if}}
+      </a>
+    </li>
+
+    <li class="nav-item dropdown mr-3">
+      <a class="nav-link text-dark" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Welcome, {{#if admin}}{{admin.name}}{{else}}Admin{{/if}} 
+        <i class="bi bi-chevron-down" style="font-size: 1rem;"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminDropdown">
+        <a class="dropdown-item" href="/admin/profile"><span><i class="bi bi-person-circle"></i></span> Profile</a>
+        <a class="dropdown-item" href="/admin/notifications"><span><i class="bi bi-bell-fill"></i></span> Notifications
+          {{!-- Display badge only if unreadCount is greater than 0 --}}
+          {{#if user.unreadCount}} {{!-- CHANGED FROM admin.unreadCount --}}
+            <span class="badge badge-danger">{{user.unreadCount}}</span> {{!-- CHANGED FROM admin.unreadCount --}}
+          {{/if}}
+        </a>
+        <a class="dropdown-item" href="/admin/settings"><span><i class="bi bi-gear-fill"></i></span> Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-danger" href="/admin/logout"><span><i class="bi bi-box-arrow-right"></i></span> Logout</a>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <img src="/images/default-user.jpg" alt="Admin Avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+    </li>
+  </ul>
+</nav>

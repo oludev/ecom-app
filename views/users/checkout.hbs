@@ -1,0 +1,88 @@
+{{!-- {{> mainHeader}}
+<header>
+  <div class="logo text-center">
+    <img src="/images/ff-logo-1.png" alt="9jaFrozenFoods" width="200px" height="110px">
+  </div>
+
+</header>
+
+<body>
+  
+<div class="d-flex align-items-center justify-content-center">
+  <div class="row">
+    <h2 class="text-center mt-5">Checkout</h2>
+  </div>
+</div>
+
+<form id="checkout-form d-flex">
+  <div class="row flex-column justify-content-center align-items-center m-5">
+       <div class="form-group col-sm-12 col-lg-4">
+    <label>Email</label>
+    <input type="email" name="email" id="email" value="{{user.email}}" class="form-control" readonly>
+  </div>
+  <div class="form-group col-sm-12 col-lg-4">
+    <label>Name</label>
+    <input type="text" name="name" id="name" value="{{user.firstname}} {{user.lastname}}" class="form-control" readonly>
+  </div>
+  <div class="form-group col-sm-12 col-lg-4">
+    <label>Total Amount</label>
+    <input type="number" name="amount" id="amount" value="3000" class="form-control" readonly>
+  </div>
+  <button type="submit" class="btn btn-success col-sm-10 col-md-6 col-lg-3">Pay with Flutterwave</button>
+  </div>
+</form>
+
+
+</body>
+
+<footer>
+    <div class="col-12 pb-1">
+			<p class="text-center">Copyright&copy; 2021 9jafrozenfoods. All Rights Reserved.</p>
+		</div>	
+    	
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+
+
+<script>
+  document.getElementById("checkoutBtn").addEventListener("click", function () {
+    FlutterwaveCheckout({
+      public_key: "FLWPUBK_TEST-171126f5d5d7ed0a024fa2a88f957db7-X",
+      tx_ref: "TX-" + Date.now() + "-" + Math.floor(Math.random() * 10000),
+      amount: parseFloat(document.getElementById("amount").value),
+      currency: "BGN",
+      customer: {
+        email: document.getElementById("email").value,
+        name: document.getElementById("name").value,
+      },
+      callback: function (data) {
+        window.location.href = `/checkout/success?tx_ref=${data.tx_ref}&transaction_id=${data.transaction_id}`;
+      },
+      customizations: {
+        title: "9jaFrozenFoods",
+        description: "Order payment",
+        logo: "../images/ff-logo-1.png",
+      },
+    });
+  });
+</script>
+
+<script>
+  const amountInput = document.getElementById('amount');
+  const storedTotal = localStorage.getItem('totalCost');
+  if (amountInput && storedTotal) {
+    amountInput.value = storedTotal;
+  }
+</script>
+
+
+<script>
+  // This ensures `window.user` is defined before payment.js runs.
+  window.user = {
+    name: "{{user.firstname}} {{user.lastname}}",
+    email: "{{user.email}}"
+  };
+</script>
+</footer>
+
+ --}}

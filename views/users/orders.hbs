@@ -1,0 +1,114 @@
+{{> mainHeader}}
+{{> navbar}}
+
+<h2 class="myacct">Home / My Account / Orders</h2>
+<hr>
+<div class="container-fluid mt-4" style="min-height: 100vh;">
+    <h2 class="text-center w-100 mb-4">My Orders</h2>
+    <div class="row mb-3 text-center justify-content-center">
+        <a href="#" class="btn btn-success btn-md col-2  m-1 order-filter-btn" data-status="all">All</a>
+        <a href="#" class="btn border-dark btn-md col-2  m-1 order-filter-btn" data-status="confirmed">Confirmed</a>
+        <a href="#" class="btn border-dark btn-md col-2  m-1 order-filter-btn" data-status="pending">Pending</a>
+        <a href="#" class="btn border-dark btn-md col-2  m-1 order-filter-btn" data-status="delivered">Delivered</a>
+        <a href="#" class="btn border-dark btn-md col-2  m-1 order-filter-btn" data-status="cancelled">Cancelled</a>
+            <div class="my-1">
+              <button class="btn btn-md btn-danger" id="clearOrdersBtn"><i class="bi bi-trash3"></i> Clear All Orders</button>
+            </div>
+            
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead> 
+            <tr>
+                <th>SN</th>
+                <th>Transaction ID</th>
+                <th>Reference</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Ordered At</th>
+            </tr>
+        </thead>
+      <tbody id="ordersBody">
+        {{#each orders}}
+        <tr>
+            <td>{{@index}}</td>
+            <td>{{this.transaction_id}}</td>
+            <td>{{this.transaction_ref}}</td>
+            <td>BGN {{this.amount}}</td>
+            <td>{{this.status}}</td>
+            <td>{{this.created_at}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="/app.js"></script>
+<script src="/cart.js"></script>
+<script src="/login.js" ></script>
+<script>
+$(document).ready(function () {
+  $('.order-filter-btn').on('click', function (e) {
+    e.preventDefault();
+
+    const status = this.getAttribute('data-status');
+    console.log('Loaded status:', status);
+    console.log("Filtering by status:", status);
+
+   fetch(`/orders/api/orders?status=${status}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const orders = data.orders;
+          console.log('Orders returned:', orders);
+          let html = '';
+
+          orders.forEach((order, index) => {
+            html += `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${order.transaction_id}</td>
+                <td>${order.transaction_ref}</td>
+                <td>BGN ${order.amount}</td>
+                <td>${order.status}</td>
+                <td>${order.created_at}</td>
+              </tr>
+            `;
+          });
+
+          $('#ordersBody').html(html);
+        } else {
+          $('#ordersBody').html(`<tr><td colspan="6" class="text-center text-danger">Failed to load orders.</td></tr>`);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        $('#ordersBody').html(`<tr><td colspan="6" class="text-center text-danger">Error loading orders.</td></tr>`);
+      });
+  });
+});
+</script>
+<script>
+  document.getElementById('clearOrdersBtn')?.addEventListener('click', async () => {
+    if (!confirm('Are you sure you want to clear all orders?')) return;
+
+    try {
+      const response = await axios.post('/api/user/orders/clear');
+      if (response.data.success) {
+        alert('Orders cleared!');
+        location.reload();
+      } else {
+        alert('Failed to clear orders.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error clearing orders.');
+    }
+  });
+</script>

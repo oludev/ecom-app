@@ -1,0 +1,45 @@
+{{> adminHeader}}
+<div>
+   <h2>All Current Products</h2>
+  <form action="/admin/products/add" method="POST" class="product-form" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Product Name" required>
+    <input type="number" name="price" placeholder="Price" required>
+    <input type="number" name="stock" placeholder="Stock" required>
+    <input type="text" name="description" placeholder="Description" required>
+    <input type="file" name="image" accept="image/*" required>
+    <button type="submit" onclick="return alert('Product added!')">Add Product</button>
+  </form>
+ {{#if products.length}}
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>₦{{this.price}}</td>
+        <td>{{this.stock}}</td>
+        <td>{{this.description}}</td>
+        <td><img src="{{this.image}}" width="50" height="50" /></td>
+        <td>
+           <a href="/admin/products/edit/{{this.id}}" class="btn btn-sm btn-light border border-dark">Edit</a>
+          <form action="/admin/products/delete/{{this.id}}" method="POST" style="display:inline;">
+            <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+   {{else}}
+    <p>No products available.</p>
+  {{/if}}
+{{> adminFooter}}

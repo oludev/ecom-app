@@ -1,0 +1,22 @@
+{{> adminHeader}}
+{{#if success}}
+  <div class="alert alert-success mt-3">{{success}}</div>
+{{/if}}
+
+{{#if error}}
+  <div class="alert alert-danger mt-3">{{error}}</div>
+{{/if}}
+
+<div class="container mt-5">
+  <h2 class="mb-4">Admin Profile</h2>
+  <div class="card p-4 shadow-sm">
+    <p><strong>Name:</strong> {{admin.name}}</p>
+    <p><strong>Email:</strong> {{admin.email}}</p>
+    <p><strong>Username:</strong> {{admin.username}}</p>
+    <p><strong>Unread Notifications:</strong> {{admin.unreadCount}}</p>
+    <p><strong>Login ID:</strong> {{admin.id}}</p>
+
+    <a href="/admin/profile/edit" class="btn btn-md btn-primary mt-3">Edit Profile</a>
+    <a href="/admin/dashboard" class="btn btn-md btn-light mt-3 ms-2">Back to Dashboard</a>
+  </div>
+</div>

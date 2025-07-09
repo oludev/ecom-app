@@ -1,0 +1,145 @@
+{{> mainHeader}}
+{{> navbar}}
+ 
+<h2 class="myacct">Home / My Account / Login</h2>
+<hr>
+<section>
+
+	<div class="container-fluid login-page">
+		<div class="row border p-4">
+			<div class="col-12">
+				<a href="/signup" class="d-inline-flex align-items-center mb-5"><img src="/images/ff-logo-1.png" alt="" width="150px" height="80px" class="mr-4"> <span><button class="acctBtn"> Create an account</button></span></a>
+				<h1>Dear Buyer, welcome back</h1>
+							{{#if message}}
+								<h6 class="alert alert-danger font-weight-bold mb-4">{{message}}</h6> 
+							{{/if}}
+							{{#if successMessage}}
+								<div class="alert alert-success font-weight-bold mt-4">{{successMessage}}</div>
+							{{/if}}
+				<h2 class="loginBtn">Login to your account</h2>
+					<form action="/auth/login" method="POST" class="loginform" class="needs-validation" novalidate>
+						<div class="form-group mb-3">
+							<label for="email" class="mylabel">Email address</label> 
+							<div class="input-container">
+								<span class="material-icons form-icon">email</span>
+								<input type="text" class="form-control" pattern="^[a-zA-Z1-9].*" name="email" id="email" required>
+							</div>
+							<div id="emailHelp" class="form-text">Your email is safe with us</div>
+							<div class="invalid-feedback" >
+								Field must be a valid email
+								  </div>
+							<div class="valid-feedback" >
+									Great!
+							</div>
+						</div>
+						<div class="form-group mb-3">
+							<label for="password" class="mylabel">Password</label>
+							<div class="input-container">
+								<span class="material-icons form-icon">lock</span>
+								<input type="password" class="form-control" id="password" pattern=".{8,}" name="password" title="minimum of 8 characters" required >
+								<span class="material-icons eye" id="togglePassword">visibility</span>
+							</div>
+							<div class="invalid-feedback" >
+								Field must contain a minimum of 8 characters
+							</div>
+						</div>
+						<div class="mb-3 form-check">
+							<input type="checkbox" class="form-check-input" id="exampleCheck1">
+							<label class="form-check-label" for="exampleCheck1" name="remember" value="1">Remember me</label>
+						</div>
+						<div class="mb-3">
+							<div  class="form-text pw" >Forgot your password? <a href="#" data-toggle="modal" data-target="#exampleModal"> Click here</a></div>
+						</div>
+						<button type="submit" class="submitBtn" >Login</button>
+					</form>
+					
+					<div class="form-group btn-fb">
+						<div class="text-center"><span><p>or</p></span>
+							<a href="/auth/facebook" class="btn btn-primary">
+								<i class="fab fa-facebook-f"></i> Login with Facebook
+							</a>
+						</div>                 
+					</div>
+				</div>
+			</div>
+		</div>
+
+<div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Reset your Password</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+			</div>
+			<div class="modal-body">
+				<div class="text-center" style="padding:50px 0">
+	<!-- Main Form -->
+	<div class="login-form-1">
+		<form id="forgot-password-form" class="text-left">
+			<div class="etc-login-form">
+				<p>When you fill in your registered email address, you will be sent instructions on how to reset your password.</p>
+			</div>
+			<div class="login-form-main-message"></div>
+			<div class="main-login-form">
+				<div class="login-group">
+					<div class="form-group">
+						<label for="fp_email" class="sr-only">Email address</label>
+						<input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="email address">
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">
+  						<i class="fa fa-envelope"></i> Send Reset Link
+				</button>
+			</div>
+		</form>
+	</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			
+			</div>
+		</div>
+	</div>
+</div>	
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="/app.js"></script>
+<script src="/cart.js"></script>
+<script src="/login.js" ></script>
+<script>
+document.getElementById('forgot-password-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const email = document.getElementById('fp_email').value;
+
+  if (!email) {
+    alert("Please enter your email address.");
+    return;
+  }
+
+  try {
+    const res = await axios.post('/auth/forgotpassword', {
+      email: email
+    });
+
+    if (res.data.success) {
+      alert('Password reset instructions sent to your email!');
+      $('#exampleModal').modal('hide');
+    } else {
+      alert(res.data.message || 'Something went wrong.');
+    }
+  } catch (err) {
+    alert(err.response?.data?.message || 'Error occurred while sending reset link.');
+  }
+});
+</script>
+
+</body>
+</html>
+

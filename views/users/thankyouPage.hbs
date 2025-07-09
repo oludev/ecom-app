@@ -1,0 +1,44 @@
+{{> mainHeader}}
+{{> navbar}}
+
+<div class="thankyoucontainer h-100 d-flex justify-content-center align-items-center px-sm-5">
+  <div class="row bg-light p-3 border rounded">
+    <div class="flex-column">
+      <h2>Thank You for Your Purchase!</h2>
+      <hr>
+      <p>Hi {{customer_name}},</p>
+      <p>Your payment was successful. Here are your details:</p>
+
+      <ul>
+        <li><strong>Transaction Reference:</strong> {{tx_ref}}</li><br>
+        <li><strong>Amount Paid:</strong> BGN {{amount}}</li><br>
+        <li><strong>Email:</strong> {{customer_email}}</li><br>
+        <li><strong>Phone No:</strong> {{customer_phone}}</li>
+      </ul>
+
+      <p>We’ve emailed you a receipt. Feel free to <a href="/shop" style="color: #00a550;">browse more items</a> or <a href="/" style="color: #00a550">go home</a>.</p>
+      <p>Your delivery will arrive within <strong>1 hour</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Clear cart data after successful payment
+  localStorage.removeItem('productsInCart');
+  localStorage.removeItem('totalCost');
+  localStorage.removeItem('cartNumbers');
+
+  // Reset cart badge
+  const badge = document.querySelector('.my-cart-badge');
+  if (badge) badge.textContent = '0';
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // ✅ Real-time notification for user
+  socket.on(`notification_user_{{user.id}}`, (data) => {
+    alert(`${data.title}: ${data.message}`);
+  });
+</script>

@@ -1,0 +1,109 @@
+@keyframes showTopText {
+  0% {
+    transform: translate3d(0, 100%, 0);
+  }
+  40%, 60% {
+    transform: translate3d(0, 50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes showTopText2 {
+  0% {
+    transform: translate3d(0, 100%, 0);
+  }
+  40%, 60% {
+    transform: translate3d(0, 50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes showBottomText {
+  0% {
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes showBottomText2 {
+  0% {
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.animated-title {
+  color: #00A550;
+  font-family: Roboto, Arial, sans-serif;
+  height: 90vmin;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vmin;
+}
+
+.animated-title > div {
+  height: 50%;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.animated-title > div div {
+  font-size: 12vmin;
+  padding: 2vmin 0;
+  position: absolute;
+}
+
+.animated-title > div div span {
+  display: block;
+}
+
+.animated-title > div.text-top2 {
+  border-bottom: 1vmin solid #000;
+  top: 0;
+  animation: text-top2 10s cubic-bezier(0.23, 1, 0.32, 1.2) infinite;
+}
+
+.animated-title > div.text-top2 div {
+  animation: showTopText2 3s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  bottom: 0;
+  transform: translate(0, 100%);
+}
+
+.animated-title > div.text-top2 div span:first-child {
+  color: #343a40;
+}
+
+.animated-title > div.text-bottom {
+  bottom: 0;
+  animation: text-bottom2 10s cubic-bezier(0.23, 1, 0.32, 1.2) infinite;
+}
+
+.animated-title > div.text-bottom2 {
+  bottom: 0;
+  animation: text-bottom2 10s cubic-bezier(0.23, 1, 0.32, 1.2) infinite;
+}
+
+.animated-title > div.text-bottom div {
+  animation: showBottomText 1s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
+  top: 0;
+  transform: translate(0, -100%);
+}
+
+.animated-title > div.text-bottom2 div {
+  animation: showBottomText2 3s;
+  animation-delay: 1.75s;
+  animation-fill-mode: forwards;
+  top: 0;
+  transform: translate(0, -100%);
+}/*# sourceMappingURL=text.css.map */

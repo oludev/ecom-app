@@ -1,0 +1,151 @@
+{{> mainHeader}}
+<div class="container-fluid signup">
+		<div class="row d-flex justify-content-between acctrow">
+			<div class="col-lg-7 col-md-12 com-sm-12">
+		    <div class="registration-form">
+		        <form action="/auth/signup" method="POST" id="validateform" class="needs-validation" novalidate>
+		            <div class="signup-icon d-flex justify-content-center">
+		                <span class="material-icons accticon ">account_circle</span>
+		            </div>
+					<div class="row">
+						<div class="col">
+							<div class="form-group">
+								<label for="firstname" class="mylabel">First Name</label>
+								<input type="text" class="form-control formtext nameformat" name="firstname" id="firstname" pattern="^[a-zA-Z].*" placeholder="Enter First name" required>
+								<div class="valid-feedback" >
+									Great!
+								  </div>
+								  <div class="invalid-feedback" >
+									Enter a valid name! 
+								  </div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group">
+								<label for="lastname" class="mylabel">Last Name</label>
+								<input type="text" class="form-control formtext nameformat" name="lastname" id="lastname" pattern="^[a-zA-Z].*" placeholder="Enter Last name" required>
+								<div class="invalid-feedback" >
+									Enter a valid name!
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="username" class="mylabel">Username</label>
+		                <input type="text" class="form-control formtext" id="username" name="username" placeholder="Enter your Username" required>
+						<div class="invalid-feedback">
+							Please enter your username
+						  </div>
+		            </div>
+
+					<div class="row">
+						<div class="col">
+							<div class="form-group">
+								<label for="password" class="mylabel">Password</label>
+								<input type="password" class="form-control formtext" id="password" name="password" pattern=".{8,}" title="minimum of 8 characters"  placeholder="Enter Password" required>
+								<div class="invalid-feedback">
+								Please enter a minimum of 8 characters
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group">
+								<label for="passwordConfirm" class="mylabel">Confirm Password</label>
+								<input type="password" class="form-control formtext" id="passwordConfirm" name="passwordConfirm" pattern=".{8,}" title="minimum of 8 characters"  placeholder="Confirm Password" required>
+							<div class="invalid-feedback">
+								Enter the same password
+							</div>
+							</div>
+						</div>
+					</div>
+		            <div class="form-group ">
+						<label for="email" class="mylabel">Email address</label>
+		                <input type="text" class="form-control formtext" id="email" name="email" placeholder="Enter your Email" required>
+						<div class="invalid-feedback">
+							Provide your email address
+						  </div> 
+		            </div> 				
+					<div class="form-group">  
+						<label for="phone" class="mylabel">Phone number</label>
+						<input type="tel" class="form-control formtext" id="phone" name="phone" pattern=".{11,}"  placeholder="+(Country code)" required>
+						<div class="invalid-feedback">
+							Enter a valid phone number
+						  </div>	
+					</div>     
+					<div class="form-group">
+						<label for="gender" class="mylabel">Gender</label>
+						<select name="gender" id="gender" class="form-control formtext" >
+						<option value="male" class="option">Male</option>
+						<option value="female">Female</option>
+						</select>
+					</div>  
+					<div class="form-check">
+					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+					<label class="form-check-label" for="flexCheckDefault">
+					I have read and agree to the <a href="/privacypolicy"> Privacy Policy</a>
+					</label>
+					<div>You have to agree to our Privacy Policy</div>
+					</div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-block create-account">Create Account </button>
+        </div>
+		{{#if message}}
+			<h6 class="alert alert-danger font-weight-bold mt-4">{{message}}</h6> 
+		{{/if}}
+        </form>
+	   </div>
+
+	   </div>
+    </div>
+</div>
+
+
+    		<div class="col-lg-5 col-md-6 fixed-bottom ml-auto actionslides" >
+						<div id="carouselExampleSlidesOnly" class="carousel slide"  data-ride="carousel" >
+							<ol class="carousel-indicators">
+								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+							  </ol>
+							<div class="carousel-inner">
+						<div class="carousel-item active animate__animated animate__fadeIn">
+							<img src="/images/signup.svg" class="d-block w-100" alt="...">
+						<div class="carousel-caption d-none d-md-block ">
+							<h5 class="svg-text">Sign up to place an order</h5>		
+						</div>
+						</div>
+						<div class="carousel-item animate__animated animate__fadeIn">
+						<img src="/images/logistics.svg" class="d-block w-100 img-fluid" alt="...">
+						<h5 class="svg-text">Get your order delivered </h5>		
+						</div>
+						<div class="carousel-item animate__animated animate__fadeIn">
+							<img src="/images/discount.svg" class="d-block w-100 img-fluid" alt="...">
+							<h5 class="svg-text">Enjoy a discount of up to 30%</h5>		
+						<div class="carousel-caption d-none d-md-block">
+					
+						
+						</div>
+						</div>
+					</div>
+				</div>
+				
+     		</div>
+     
+ 
+    	</div>
+		</div>
+</section>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="/app.js"></script>
+<script src="/cart.js"></script>
+<script src="/login.js" ></script>
+
+</body>
+</html>

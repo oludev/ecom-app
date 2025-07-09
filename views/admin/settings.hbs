@@ -1,0 +1,47 @@
+{{> adminHeader}}
+
+<div class="container mt-5">
+  <h2>Admin Settings</h2>
+
+  {{#if success}}
+    <div class="alert alert-success">{{success}}</div>
+  {{/if}}
+
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+
+  <form action="/admin/settings/update" method="POST" class="card p-4 mb-4 shadow-sm">
+    <h4>Update Profile</h4>
+    <div class="mb-3">
+      <label>Name</label>
+      <input type="text" name="name" class="form-control" value="{{admin.name}}" required>
+    </div>
+    <div class="mb-3">
+      <label>Username</label>
+      <input type="text" name="username" class="form-control" value="{{admin.username}}" required>
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" value="{{admin.email}}" required>
+    </div>
+    <button class="btn btn-success">Save Changes</button>
+  </form>
+
+  <form action="/admin/settings/password" method="POST" class="card p-4 shadow-sm">
+    <h4>Change Password</h4>
+    <div class="mb-3">
+      <label>Current Password</label>
+      <input type="password" name="currentPassword" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>New Password</label>
+      <input type="password" name="newPassword" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Confirm New Password</label>
+      <input type="password" name="confirmPassword" class="form-control" required>
+    </div>
+    <button class="btn btn-primary">Change Password</button>
+  </form>
+</div>
