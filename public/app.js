@@ -106,7 +106,37 @@ function myFunction() {
           li[i].style.display = "none";
       }
   }
+  };
+
+
+
+document.getElementById('forgot-password-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const email = document.getElementById('fp_email').value;
+
+  if (!email) {
+    alert("Please enter your email address.");
+    return;
   }
+
+  try {
+    const res = await axios.post('/auth/forgotpassword', {
+      email: email
+    });
+
+    if (res.data.success) {
+      alert('Password reset instructions sent to your email!');
+      $('#exampleModal').modal('hide');
+    } else {
+      alert(res.data.message || 'Something went wrong.');
+    }
+  } catch (err) {
+    alert(err.response?.data?.message || 'Error occurred while sending reset link.');
+  }
+});
+
+
+
 
 
   document.addEventListener("DOMContentLoaded", () => {

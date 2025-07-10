@@ -71,7 +71,6 @@ nav{
     width: 100%;
     text-transform: uppercase;
     display: inline-flex;
-   
 }
 
 
@@ -580,11 +579,12 @@ div .card .eachitem h5{
     padding: 60px 80px 40px;
     position: relative;
 }
+
 .blockquote p {
     font-family:  "Barlow", sans-serif;
     font-size: 30px;
     font-weight: 700px;
-    text-align: center
+    text-align: center;
 }
 
 /*blockquote p::before {
@@ -598,7 +598,7 @@ div .card .eachitem h5{
 
 .blockquote:before {
   position: absolute;
-  font-family: 'Carattere', cursive;
+  font-family: 'Barlow', sans-serif;
   top: 0px;
   
   content:"\f10d";
@@ -903,9 +903,6 @@ h2.myacct{
     color: #0c0c0c;
 }
 
-.-form{
-    margin: 80px 0px;
-}
 
 .loginform input{
     font-size: 18px;
@@ -1247,7 +1244,6 @@ word-break: break-word !important;
     height: 70vh;
     display: flex;
     margin: 5rem 0;
-   
 }
 
 .profile-wrapper .container .row .material-icons{
@@ -1621,7 +1617,7 @@ img.logo_white{
     height:150px;
 }
 
-.cart{
+.{
     position: relative;
 }
 
@@ -2124,7 +2120,7 @@ h4.cartTotal{
 }
 
 h2.review{
-    font-size: 20px!important;
+    font-size: 20px;
     position: absolute;
     transform:translate(-50%, -50%);
     left:50%;
@@ -2154,7 +2150,6 @@ img.footer-logo{
     margin-top: 6rem;
 }
 
-
 #sidebar{
     position: fixed;
     width: 50%;
@@ -2166,7 +2161,7 @@ img.footer-logo{
     left:0;
     right: 0;
     bottom: 0;
-     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;   
+    transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;   
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2184,7 +2179,7 @@ img.footer-logo{
 	width: 100%;
 	background-color: #00A550;
 	border-radius: 2px;
-	transition: all cubic-bezier(0.26, 0.1, 0.27, 1.55) 0.2s; 
+	transition: all cubic-bezier(0.26, 0.1, 0.27, 1.55) 0.35s; 
 }
 
 .top{
@@ -2208,6 +2203,7 @@ img.footer-logo{
 	transform:rotate(-45deg);
 	top: 48%;
 }
+
 
 .login-page{
     width: 300px;
@@ -2417,21 +2413,17 @@ img.footer-logo{
     margin:auto;
 }
 
-footer h3{
-    font-size: 15px;
-}
-
-footer p{
-    font-size: 15px;
+footer .row{
+    font-size: 16px;
 }
 
 .blockquote p {
-    font-size: 27px;
+    font-size: 20px;
 }
 
 
 h2.review{
-    font-size: 25px!important;
+    font-size: 18px!important;
     position: absolute;
     transform:translate(-50%, -50%);
     left:50%;
@@ -2446,9 +2438,49 @@ h2.review{
     display: none;
 }
 
+
+span.my-cart-badge{
+    position: absolute;
+    top:-20%!important;
+    margin-left: 0rem;
+    right: 0;
+    display: flex;
+
 }
 
 
+.mywishlist{
+    position: relative;
+}
+
+span.my-wishlist{
+    position: absolute;
+     top:-20%!important;
+    margin-left: 0rem;
+    right: 0;
+    display: flex;
+}
+
+.carousel-item h5{
+    font-size: 15px;
+}
+
+
+.jumbotron span.material-icons{
+    font-size: 16px;
+}
+
+.jumbotron small{
+    font-family:  "Barlow", sans-serif;
+    font-size: 16px;
+    color: #fff;
+}
+
+h2{
+    font-size: 18px!important;
+}
+
+}
 
 
 @media(max-width: 500px) {
@@ -2468,7 +2500,63 @@ h2.review{
     }
 
     
+.navbar-two{
+    height: 250px;
+}
 
 
-  
+#wrapper{
+	display:inline-block;
+	border-radius: 5px;
+	margin: -10px;
+}
+
+.navbar-one span.material-icons{
+    font-size: 20px;
+    margin-left: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    z-index: 1;
+    display: inline-flex;
+}
+
+
+.navbar-pages span.material-icons{
+    font-size: 20px;
+    margin-left: 20px;
+    padding-bottom: 0;
+    z-index: 1;
+    display: inline-flex;
+}
+
+span.nav-link.material-icons{
+    margin-left: 0rem;
+    padding: 0;
+}
+
+.cart{
+    position: relative;
+}
+
+footer .row{
+    font-size: 16px;
+}
+
+h2.review{
+    font-size: 15px;
+    width: 100%;
+}
+
+
+.carousel-item h5{
+    font-size: 15px;
+}
+
+
+.blockquote p {
+    font-size: 17px;
+
+}
+
+
 }
