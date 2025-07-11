@@ -94,21 +94,35 @@ $(document).ready(function () {
   });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
   document.getElementById('clearOrdersBtn')?.addEventListener('click', async () => {
-    if (!confirm('Are you sure you want to clear all orders?')) return;
+    const confirmed = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will permanently delete all your orders!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete all!',
+      cancelButtonText: 'Cancel'
+    });
 
-    try {
-      const response = await axios.post('/api/user/orders/clear');
-      if (response.data.success) {
-        alert('Orders cleared!');
-        location.reload();
-      } else {
-        alert('Failed to clear orders.');
+    if (confirmed.isConfirmed) {
+      try {
+        const res = await axios.post('/api/user/orders/clear'); // Your actual route here
+        if (res.data.success) {
+          Swal.fire('Deleted!', 'Your orders have been cleared.', 'success').then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire('Failed', 'Could not clear orders.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        Swal.fire('Error', 'Something went wrong while clearing orders.', 'error');
       }
-    } catch (err) {
-      console.error(err);
-      alert('Error clearing orders.');
     }
   });
 </script>

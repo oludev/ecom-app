@@ -366,7 +366,7 @@ input.searchbox[type="text"]{
 button.ctaBtn{
     background-color: #00A550!important;
     width: 100%;
-    font-size: 22px!important;
+    font-size:18px;
     padding: 5px;
     color: #fff;
     border:  1px solid transparent;
@@ -374,7 +374,12 @@ button.ctaBtn{
     font-weight: 500;
     cursor: pointer;
     font-family: "Montserrat", sans-serif;
+    margin-top:25rem;
+    margin-left:0rem;
 }
+
+
+
 
 button.ctaBtn:hover{
     background-color: rgba(0,165,80, 0.85)!important;
@@ -441,7 +446,6 @@ span.text-one{
     cursor: pointer;
 }
 
-
 .cost span{
     font-size: 20px;
     color: #000;
@@ -460,7 +464,6 @@ a.add-to-cart{
     position: relative;
 }
 
-
 a.add-to-cart:hover{
     text-decoration: none;
     color: #fff;
@@ -469,7 +472,6 @@ a.add-to-cart:hover{
 span.likeBtn{
     transition: all ease 0.5s;
     cursor: pointer;
-
 }
 
 .card{
@@ -534,7 +536,7 @@ span.arrowBtn{
 }
 
 .card h5{
-     font-family:  "Montserrat", sans-serif;
+    font-family:  "Montserrat", sans-serif;
     font-weight: 600;
 }
 
@@ -1045,6 +1047,7 @@ article p{
     justify-content: space-around;
     margin: 30px auto;
     min-height: 100vh;
+    font-family: 'Barlow', sans-serif;
 }
 
 .product-header{
@@ -1081,7 +1084,7 @@ article p{
 .products{
     display: flex;
     flex-wrap: wrap;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
 }
 
@@ -1093,7 +1096,7 @@ article p{
 }
 
 .products-container span.material-icons{
-    font-size: 25px;
+    font-size: 20px;
     color: #8CC53F;
     cursor: pointer;
     display: flex;
@@ -1114,13 +1117,13 @@ article p{
 
 h4.cartTotalTitle{
     width: 20%;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
 }
 
 h4.cartTotal{
     width: 15%;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -1315,6 +1318,7 @@ div.acct-title{
   transition: left 0.3s ease-in-out;
   z-index: 9999;
   overflow-y: auto;
+  font-family: 'Barlow', 'sans-serif';
 }
 
 .checkout-panel.active {
@@ -1432,10 +1436,6 @@ span.bellcount{
     margin-top:5rem;
 }
 
-button.ctaBtn{
-    margin-top:25rem;
-    margin-left:0rem;
-}
 
 .chickenImg{
     margin-left: 1rem;
@@ -1562,9 +1562,9 @@ img.footer-logo{
 }
 
 button.ctaBtn{
+      font-size:18px!important;
     margin-top:35rem;
     margin-left: 0rem;
-    font-size: 25px;
 }
 
 .chickenImg{
@@ -1695,8 +1695,9 @@ h2.review{
 }
 
 button.ctaBtn{
+    font-size:18px;
     margin-top:25rem;
-    margin-left: -1rem;
+    margin-left: 0rem;
 }
 
 
@@ -1921,7 +1922,7 @@ img.logo_white{
 button.ctaBtn{
     margin-left:2.5rem;
     margin-top:30rem;   
-    font-size: large; 
+    font-size: 18px; 
 }
 
 
@@ -2318,6 +2319,7 @@ ul li #user-dropdown{
 }
 
 button.ctaBtn{
+    margin-left: 0rem!important;
     margin-top: 25rem;
     margin-left:1.5rem;
 }
@@ -2556,7 +2558,6 @@ h2.review{
 
 .blockquote p {
     font-size: 17px;
-
 }
 }
 
@@ -2608,10 +2609,6 @@ h2.review{
     padding-left: 0.5rem;
   }
 
-  .form-icon {
-    font-size: 20px;
-    color: #28a745;
-  }
 
   .eye {
     font-size: 20px;
@@ -2710,10 +2707,7 @@ h2.review{
     padding-left: 0.5rem;
   }
 
-  .form-icon, .eye {
-    font-size: 20px;
-    color: #28a745;
-  }
+ 
 
   .form-text,
   .form-check-label {
@@ -2744,7 +2738,7 @@ h2.review{
   }
 
   h1 {
-    font-size: 1.2rem;
+    font-size: 1rem!important;
     text-align: center;
   }
 
@@ -2752,4 +2746,26 @@ h2.review{
     font-size: 1rem;
     padding: 0 1rem;
   }
+
+  .cartTotalContainer{
+    width: 100%;
+    padding: 10px 0;
+}
+
+h4.cartTotalTitle{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+h4.cartTotal{
+    width: 15%;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+button.ctaBtn{
+    font-size: 15px;
+    margin-left: 0rem!important;
+}
+
 }

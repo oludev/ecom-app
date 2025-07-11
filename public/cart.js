@@ -20,21 +20,21 @@ function populateProducts() {
       : `<span class="badge badge-danger">Out of Stock</span>`;
 
     const cartButton = product.stock > 0
-      ? `<div class="p-3 foodItem text-center mt-3 add-to-cart" data-index="${i}">
-           <a class="text-uppercase text-white text-decoration-none">Add to cart</a>
+      ? `<div class="p-2 foodItem text-center mt-1 add-to-cart" data-index="${i}">
+           <a class="text-white text-decoration-none">Add to cart</a>
            <i class="fa-solid fa-cart-shopping"></i>
          </div>`
-      : `<div class="p-3 foodItem text-center mt-3 text-muted">
-           <span class="text-uppercase rounded btn-light p-1">Unavailable</span>
+      : `<div class="foodItem text-center mt-1 p-2 text-muted">
+           <span class="rounded btn-light">Unavailable</span>
          </div>`;
 
     return `
-      <div class="d-flex justify-content-center align-items-center col-lg-3 col-md-4 col-sm-6">
+      <div class="d-flex justify-content-center align-items-center col-xl-3 col-lg-3 col-md-4">
         <div class="card mt-3 row">
-          <div class="eachitem align-items-center p-3" >
+          <div class="eachitem align-items-center p-4" >
             <div class="d-flex">
               <h5 class="mt-1">${product.name}</h5>
-              <span class="ml-auto"> 
+              <span class="ml-auto pl-3"> 
                 <i class="fa-regular fa-heart wishlist-icon" role="button"
                    data-id="${product.id || product._id}" 
                    data-name="${product.name}" 
@@ -42,7 +42,7 @@ function populateProducts() {
                    data-price="${product.price}"></i>
               </span>
             </div>
-            <img src="${product.image}" alt="${product.description}" height="200" width="200" class="trigger" data-toggle="modal" data-target="#exampleModal">
+            <img src="${product.image}" alt="${product.description}" height="100" width="100" class="trigger" data-toggle="modal" data-target="#exampleModal">
             <div class="my-2">${stockStatus}</div>
             <div style="font-size: 18px; font-weight: 700">Price: BGN ${product.price.toFixed(2)}</div>
           </div>
