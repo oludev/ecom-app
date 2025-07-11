@@ -2653,7 +2653,7 @@ h2.review{
 /* Adjust login page for very small screens (360px and below) */
 @media (max-width: 400px) {
   .login-page {
-    padding: 0rem;
+    padding: 1rem;
   }
 
   .login-page .row {
@@ -2686,7 +2686,7 @@ h2.review{
   }
 
   .loginform {
-    padding: 0rem;
+    padding: 0 0.5rem;
   }
 
   .form-group {
@@ -2750,7 +2750,6 @@ h2.review{
 
   h2.myacct {
     font-size: 1rem;
-    padding: 0rem;
+    padding: 0 1rem;
   }
-  
 }
