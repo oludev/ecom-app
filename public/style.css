@@ -1617,7 +1617,8 @@ img.logo_white{
     height:150px;
 }
 
-.{
+
+.cart{
     position: relative;
 }
 
@@ -2557,6 +2558,199 @@ h2.review{
     font-size: 17px;
 
 }
+}
 
 
+/* Mobile-first login form styling */
+@media (max-width: 575.98px) {
+  .login-page {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .login-page .row {
+    padding: 1.5rem !important;
+    margin: 0 !important;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .login-page h1,
+  .login-page h2.loginBtn {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .loginform {
+    padding: 0 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.3rem;
+  }
+
+  .form-group .input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    background-color: #f5f9ff;
+  }
+
+  .form-group .input-container input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background: transparent;
+    padding-left: 0.5rem;
+  }
+
+  .form-icon {
+    font-size: 20px;
+    color: #28a745;
+  }
+
+  .eye {
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+  }
+
+  .submitBtn,
+  .btn-fb .btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border-radius: 5px;
+  }
+
+  .acctBtn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .pw {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 1rem;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+
+  .form-text#emailHelp {
+    margin-top: 0.2rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Adjust login page for very small screens (360px and below) */
+@media (max-width: 400px) {
+  .login-page {
+    padding: 0rem;
+  }
+
+  .login-page .row {
+    padding: 1.2rem;
+    margin: 0;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .login-page a.d-inline-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .acctBtn {
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .loginBtn {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #28a745;
+  }
+
+  .loginform {
+    padding: 0rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    background-color: #f0f4f8;
+    border: 1px solid #ccc;
+    padding: 0.4rem 0.6rem;
+    border-radius: 5px;
+  }
+
+  .input-container input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    padding-left: 0.5rem;
+  }
+
+  .form-icon, .eye {
+    font-size: 20px;
+    color: #28a745;
+  }
+
+  .form-text,
+  .form-check-label {
+    font-size: 0.85rem;
+  }
+
+  .pw {
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .submitBtn {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  .btn-fb .btn {
+    width: 100%;
+    font-size: 0.95rem;
+    margin-top: 0.8rem;
+  }
+
+  .alert {
+    font-size: 0.85rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  h2.myacct {
+    font-size: 1rem;
+    padding: 0rem;
+  }
+  
 }
