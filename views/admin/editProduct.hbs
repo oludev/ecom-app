@@ -1,22 +1,41 @@
 {{> adminHeader}}
 
-<div class="container">
+<div class="container mt-4">
   <h2>Edit Product</h2>
-  <form method="POST" action="/admin/products/edit/{{product.id}}">
-    <label>Name</label>
-    <input type="text" name="name" value="{{product.name}}" required>
 
-    <label>Price</label>
-    <input type="number" name="price" value="{{product.price}}" step="0.01" required>
+  <form method="POST" action="/admin/products/edit/{{product.id}}" enctype="multipart/form-data" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" name="name" value="{{product.name}}" class="form-control" required>
+    </div>
 
-    <label>Stock</label>
-     <input type="number" name="stock" value="{{product.stock}}" placeholder="Stock quantity" required>
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input type="number" name="price" value="{{product.price}}" step="0.01" class="form-control" required>
+    </div>
 
-    <label>Description</label><br>
-    <textarea name="description" required>{{product.description}}</textarea>
+    <div class="mb-3">
+      <label class="form-label">Stock</label>
+      <input type="number" name="stock" value="{{product.stock}}" class="form-control" required>
+    </div>
 
-    <button type="submit" class="btn btn-success mb-5">Update Product</button>
-    <a href="/admin/products" class="btn btn-secondary mb-5">Cancel</a>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control" required>{{product.description}}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Product Image</label>
+      <input type="file" name="image" accept="image/*" class="form-control">
+      {{#if product.image}}
+        <div class="mt-2">
+          <img src="/uploads/{{product.image}}" alt="{{product.name}}" width="120">
+        </div>
+      {{/if}}
+    </div>
+    <span><button type="submit" class="btn btn-success col-2 mx-3">Update Product</button>
+    <a href="/admin/products" class="btn btn-secondary border rounded col-2">Cancel</a></span>
+    
   </form>
 </div>
 

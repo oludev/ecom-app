@@ -31,8 +31,6 @@
 </div>
 
 
-{{> adminFooter}}
-
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
@@ -54,22 +52,39 @@
     }
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 function clearAdminNotifications() {
-  if (!confirm('Are you sure you want to delete all notifications?')) return;
-
-  axios.post('/admin/api/notifications/clear')
-    .then(res => {
-      if (res.data.success) {
-        alert('All notifications cleared successfully!');
-        location.reload();
-      } else {
-        alert('Failed to clear notifications.');
-      }
-    })
-    .catch(err => {
-      console.error('Clear Notifications Error:', err);
-      alert('An error occurred while clearing notifications.');
-    });
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will delete all notifications permanently!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: 'Yes, delete all',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios.post('/admin/api/notifications/clear')
+        .then(res => {
+          if (res.data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Cleared!',
+              text: 'All notifications cleared successfully!',
+              confirmButtonColor: '#28a745'
+            }).then(() => location.reload());
+          } else {
+            Swal.fire('Error', 'Failed to clear notifications.', 'error');
+          }
+        })
+        .catch(err => {
+          console.error('Clear Notifications Error:', err);
+          Swal.fire('Oops!', 'An error occurred while clearing notifications.', 'error');
+        });
+    }
+  });
 }
 </script>
+{{> adminFooter}}

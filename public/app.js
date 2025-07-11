@@ -50,16 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const pass = document.querySelector('#password');
   const btn = document.querySelector('#togglePassword');
 
-  // Check if 'btn' is not null before adding the event listener
-  if (btn) {
+  if (btn && pass) {
     btn.addEventListener('click', () => {
-      if (pass.type === "text") {
-        pass.type = "password";
-        btn.innerHTML = "visibility_off";
-      } else {
-        pass.type = "text";
-        btn.innerHTML = "visibility";
-      }
+      const isText = pass.type === 'text';
+      pass.type = isText ? 'password' : 'text';
+      btn.textContent = isText ? 'visibility_off' : 'visibility';
     });
   }
 });

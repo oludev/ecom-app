@@ -112,3 +112,18 @@
 <script src="/app.js"></script>
 <script src="/cart.js"></script>
 <script src="/login.js" ></script>
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+  const pass = document.querySelector('#password');
+  const btn = document.querySelector('#togglePassword');
+
+  if (btn && pass) {
+    btn.addEventListener('click', () => {
+      const isText = pass.type === 'text';
+      pass.type = isText ? 'password' : 'text';
+      btn.textContent = isText ? 'visibility_off' : 'visibility';
+    });
+  }
+});
+
+</script>

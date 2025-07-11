@@ -338,6 +338,7 @@ input.searchbox[type="text"]{
     height: 50px;
     top: 0;
 } 
+
 /*---------------------------------------------Toggle button------------------------------------------*/
 
 
@@ -355,7 +356,7 @@ input.searchbox[type="text"]{
 
 /*---------------------------banner-------------------------------------------------*/
 .banner-show{
-    height: 120vh;
+    height: 100vh;
     margin: 0;;
 }
 
@@ -374,16 +375,29 @@ button.ctaBtn{
     font-weight: 500;
     cursor: pointer;
     font-family: "Montserrat", sans-serif;
-    margin-top:25rem;
+    margin-top:30rem;
     margin-left:0rem;
 }
-
-
 
 
 button.ctaBtn:hover{
     background-color: rgba(0,165,80, 0.85)!important;
     transition: 0.5s ease;
+}
+
+button.cta{
+    background-color: #00A550!important;
+    width: 100%;
+    font-size:18px;
+    padding: 5px;
+    color: #fff;
+    border:  1px solid transparent;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    margin-top:30rem;
+    margin-left:2rem;
 }
 
 .animated-title > div.text-top2, .animated-title > div.text-bottom2{
@@ -1563,7 +1577,7 @@ img.footer-logo{
 
 button.ctaBtn{
       font-size:18px!important;
-    margin-top:35rem;
+    margin-top:25rem;
     margin-left: 0rem;
 }
 
@@ -1662,6 +1676,9 @@ h2.review{
     margin-top:-2rem;
     margin-left: 20rem;
 }
+
+
+
 
 
 }
@@ -2345,7 +2362,7 @@ img.logo_white{
 }
 
 .jumbotron{
-    margin-top: 7em;
+    margin-top: 0em;
     height: auto;
 }
 
@@ -2645,6 +2662,22 @@ h2.review{
     margin-bottom: 0.3rem;
     font-size: 0.8rem;
   }
+
+  button.cta{
+    background-color: #00A550!important;
+    width: 100%;
+    font-size:18px;
+    padding: 5px;
+    color: #fff;
+    border:  1px solid transparent;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    margin-top:35rem;
+    margin-left:2rem;
+}
+
 }
 
 /* Adjust login page for very small screens (360px and below) */
@@ -2765,7 +2798,23 @@ h4.cartTotal{
 
 button.ctaBtn{
     font-size: 15px;
-    margin-left: 0rem!important;
+    margin-left: 0rem;
 }
+
+button.cta{
+    background-color: #00A550!important;
+    width: 100%;
+    font-size:18px;
+    padding: 5px;
+    color: #fff;
+    border:  1px solid transparent;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    margin-top:25rem;
+    margin-left:1rem;
+}
+
 
 }
