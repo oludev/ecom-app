@@ -64,7 +64,7 @@ exports.productList = [
     },
     {   
         id: 8,
-        name: 'Dry Chili Pepper',
+        name: 'Chili Pepper',
         description: 'A pack of dry Chili pepper',
         tag: 'chilipepper',
         price: 20,
