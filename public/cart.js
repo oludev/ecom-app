@@ -59,9 +59,6 @@ function populateProducts() {
   }
 }
 
-
-
-
 function addCartActions() {
   document.querySelectorAll('.add-to-cart').forEach(cart => {
     cart.addEventListener('click', () => {
