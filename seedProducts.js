@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 
 // Import the unified promise-based DB connection
-const db = require('../config/db'); // Adjust path if seedProducts.js is not in a subdirectory relative to config
+const db = require('./config/db'); // Adjust path if seedProducts.js is not in a subdirectory relative to config
 
 async function seedProducts() {
   try {

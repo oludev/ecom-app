@@ -5,7 +5,7 @@ exports.productList = [
         description: 'Organic full chicken',
         tag: 'fullchicken',
         price: 15,
-        inCart: 2,
+        inCart: 0,
         image: '/images/fullchicken.jpg'
     },
     {   
@@ -14,13 +14,13 @@ exports.productList = [
         description: '3 Pcs of turkey wings',
         tag: 'turkeywings',
         price: 25,
-        inCart: 2,
+        inCart: 0,
         image: '/images/turkeywings.jpg'
     },
     {   
         id: 3,
         name: 'Smoked Fish',
-        description: '3 Pieces: 15lv',
+        description: '3 Pieces of smoked fish',
         tag: 'smokedfish',
         price: 15,
         inCart: 0,

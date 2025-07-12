@@ -45,36 +45,69 @@ function attachWishlistItemEvents() {
   const cartItems = JSON.parse(localStorage.getItem("productsInCart")) || {};
 
   document.querySelectorAll('.remove-wishlist').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      delete wishlistItems[id];
-      localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
-      displayWishlist();
-      updateWishlistCount();
-    });
-  });
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    const itemName = wishlistItems[id]?.name || 'Item';
 
-  document.querySelectorAll('.move-to-cart').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const item = wishlistItems[id];
-      if (!item) return;
+    Swal.fire({
+      title: `Remove ${itemName}?`,
+      text: "It will be removed from your wishlist.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delete wishlistItems[id];
+        localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
+        displayWishlist();
+        updateWishlistCount();
 
-      if (cartItems[id]) {
-        cartItems[id].inCart += 1;
-      } else {
-        cartItems[id] = { ...item, inCart: 1 };
+        Swal.fire({
+          toast: true,
+          icon: 'success',
+          title: `${itemName} removed from wishlist`,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
-
-      delete wishlistItems[id];
-      localStorage.setItem("productsInCart", JSON.stringify(cartItems));
-      localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
-      updateWishlistCount();
-      updateCartBadge(); // From cart.js
-      displayWishlist();
-      alert(`${item.name} moved to cart!`);
     });
   });
+});
+
+
+document.querySelectorAll('.move-to-cart').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    const item = wishlistItems[id];
+    if (!item) return;
+
+    if (cartItems[id]) {
+      cartItems[id].inCart += 1;
+    } else {
+      cartItems[id] = { ...item, inCart: 1 };
+    }
+
+    delete wishlistItems[id];
+    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+    localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
+    updateWishlistCount();
+    updateCartBadge();
+    displayWishlist();
+
+    Swal.fire({
+      toast: true,
+      icon: 'success',
+      title: `${item.name} moved to cart`,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  });
+});
+
 }
 
 function updateWishlistCount() {

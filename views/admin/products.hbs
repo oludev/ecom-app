@@ -28,7 +28,7 @@
         <td>₦{{this.price}}</td>
         <td>{{this.stock}}</td>
         <td>{{this.description}}</td>
-        <td><img src="{{this.image}}" width="50" height="50" /></td>
+        <td><img src="/uploads/{{this.image}}" width="50" height="50" /></td>
         <td>
            <a href="/admin/products/edit/{{this.id}}" class="btn btn-sm btn-light border border-dark">Edit</a>
           <form action="/admin/products/delete/{{this.id}}" method="POST" style="display:inline;">
