@@ -59,9 +59,4 @@ exports.wishlistCtrlFunction = (req, res) => {
     });
 }
 
-exports.notificationsFunction = (req, res) => {
-    res.render('users/notifications',{
-        layout:'main'
-    });
-}
 

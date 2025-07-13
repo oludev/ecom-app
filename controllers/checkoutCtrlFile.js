@@ -1,9 +1,10 @@
 const Flutterwave = require('flutterwave-node-v3');
 const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
-const db = require('../config/db'); 
+const db = require('../config/db');
 const { sendUserReceipt } = require('../utils/email');
 const { createNotification, getUnreadCountForUser, getUnreadCountForAdmin } = require('../utils/notify');
 
+// === Render Checkout Page ===
 exports.renderCheckoutPage = (req, res) => {
   const user = req.session.userData;
   if (!user) return res.redirect('/auth/login');
@@ -20,10 +21,11 @@ exports.renderCheckoutPage = (req, res) => {
   });
 };
 
+// === Handle Checkout POST (Flutterwave payment init) ===
 exports.checkoutCtrlFunction = async (req, res) => {
   try {
-    const productsFromFrontend = req.body.products || [];
     const { products, user } = req.body;
+    const productsFromFrontend = products || [];
 
     if (!user || !user.email || !user.id) {
       return res.status(400).json({ error: 'User info missing from request' });
@@ -68,8 +70,8 @@ exports.checkoutCtrlFunction = async (req, res) => {
     }
     req.session.cart = enrichedCart;
 
-    const redirectHost = req.protocol + '://' + req.get('host');
-    const redirectUrl = `${redirectHost}/checkout/success`;
+    // ✅ Fix double slash
+    const redirectUrl = "https://localhost:3000/checkout/success";
 
     return res.status(200).json({
       tx_ref,
@@ -88,6 +90,7 @@ exports.checkoutCtrlFunction = async (req, res) => {
   }
 };
 
+// === Handle Successful Payment Redirect ===
 exports.cartSuccessFunction = async (req, res) => {
   const { tx_ref, transaction_id } = req.query;
 
@@ -95,8 +98,20 @@ exports.cartSuccessFunction = async (req, res) => {
     return res.status(400).send('Missing transaction reference or ID.');
   }
 
+  // ✅ Fallback if session was cleared
+  if (!req.session.userData) {
+    return res.render('users/thankyouPage', {
+      tx_ref,
+      amount: 0,
+      customer_name: "Customer",
+      customer_email: "unknown@user.com",
+      customer_phone: "N/A",
+      user: null
+    });
+  }
+
   try {
-    // Prevent repeated processing on page reload
+    // ✅ Prevent repeated processing
     if (req.session.lastProcessedTxRef === tx_ref) {
       return res.render('users/thankyouPage', {
         tx_ref,
@@ -109,15 +124,13 @@ exports.cartSuccessFunction = async (req, res) => {
     }
 
     const result = await flw.Transaction.verify({ id: transaction_id });
-
     if (!result || result.data.status !== 'successful') {
       return res.redirect('/cart?paid=false');
     }
 
     const io = req.app.get('io');
-
-    let userSession = req.session.userData || {};
-    let userId = userSession.id;
+    const userSession = req.session.userData || {};
+    const userId = userSession.id;
 
     const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
     const dbUser = rows[0] || {};
@@ -126,13 +139,9 @@ exports.cartSuccessFunction = async (req, res) => {
     const customerEmail = dbUser.email || userSession.email || 'not@provided.com';
     const customerPhone = dbUser.phone || userSession.phone || 'N/A';
     const customerFirstName = dbUser.firstname || customerName.split(' ')[0];
-
     const amount = result.data.amount;
 
-    const [existingTx] = await db.query(
-      'SELECT * FROM transactions WHERE transaction_id = ?',
-      [transaction_id]
-    );
+    const [existingTx] = await db.query('SELECT * FROM transactions WHERE transaction_id = ?', [transaction_id]);
     if (existingTx.length === 0) {
       await db.query(
         'INSERT INTO transactions (tx_ref, transaction_id, customer_name, customer_phone, customer_email, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -145,12 +154,13 @@ exports.cartSuccessFunction = async (req, res) => {
 
     await db.query(
       `INSERT INTO orders (user_id, customer_name, customer_phone, customer_email, products, transaction_id, transaction_ref, amount, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [userId, customerName, customerPhone, customerEmail, productSummary, transaction_id, tx_ref, amount, 'confirmed']
     );
 
     req.session.cart = [];
 
+    // === Notifications
     const userNotifId = await createNotification(
       'Order Confirmed',
       `Hi ${customerFirstName}, your order has been received and is being processed.`,
@@ -167,11 +177,8 @@ exports.cartSuccessFunction = async (req, res) => {
       'admin'
     );
 
-    let updatedUserUnreadCount = 0;
-    if (userId) {
-      updatedUserUnreadCount = await getUnreadCountForUser(userId);
-      req.session.userData.unreadCount = updatedUserUnreadCount;
-    }
+    const updatedUserUnreadCount = await getUnreadCountForUser(userId);
+    req.session.userData.unreadCount = updatedUserUnreadCount;
 
     const updatedAdminUnreadCount = await getUnreadCountForAdmin();
     if (req.session.admin) {
@@ -207,7 +214,7 @@ exports.cartSuccessFunction = async (req, res) => {
       });
     }
 
-    // Save values to session to avoid reprocessing
+    // ✅ Store values to prevent reprocessing
     req.session.lastProcessedTxRef = tx_ref;
     req.session.lastProcessedAmount = amount;
     req.session.lastProcessedName = customerName;

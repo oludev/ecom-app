@@ -177,7 +177,7 @@ function displayCart() {
       <div class="product d-flex justify-content-between align-items-center py-3 border-bottom">
         <div class="d-flex align-items-center gap-3" style="flex: 1;">
           <span class="material-icons removebtn" data-key="${key}">delete</span>
-          <img src="/uploads/${item.image}" width="80" height="80">
+          <img src="${item.image}" width="80" height="80">
           <span>${item.name}</span>
         </div>
         <div class="price" style="flex: 1; text-align: center;">BGN ${item.price}</div>
