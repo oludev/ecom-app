@@ -21,21 +21,28 @@ exports.renderCheckoutPage = (req, res) => {
   });
 };
 
-// === Handle Checkout POST (Flutterwave payment init) ===
+// === Handle Checkout POST (Flutterwave Payment Init) ===
 exports.checkoutCtrlFunction = async (req, res) => {
   try {
     const { products, user } = req.body;
-    const productsFromFrontend = products || [];
 
     if (!user || !user.email || !user.id) {
       return res.status(400).json({ error: 'User info missing from request' });
     }
 
     let totalAmount = 0;
-    for (const item of productsFromFrontend) {
+    const enrichedCart = [];
+
+    for (const item of products) {
       const [rows] = await db.query('SELECT name, price FROM products WHERE id = ?', [item.id]);
       if (rows.length) {
         totalAmount += rows[0].price * item.inCart;
+        enrichedCart.push({
+          id: item.id,
+          inCart: item.inCart,
+          name: rows[0].name,
+          price: rows[0].price
+        });
       }
     }
 
@@ -56,21 +63,9 @@ exports.checkoutCtrlFunction = async (req, res) => {
       phone: dbUser.phone || user.phone || '',
     };
 
-    const enrichedCart = [];
-    for (const item of products) {
-      const [rows] = await db.query('SELECT name, price FROM products WHERE id = ?', [item.id]);
-      if (rows.length) {
-        enrichedCart.push({
-          id: item.id,
-          inCart: item.inCart,
-          name: rows[0].name,
-          price: rows[0].price
-        });
-      }
-    }
     req.session.cart = enrichedCart;
 
-    const redirectUrl = "https://ecom-app-42zd.onrender.com/checkout/success";
+    const redirectUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/checkout/success`;
 
     return res.status(200).json({
       tx_ref,
@@ -97,7 +92,7 @@ exports.cartSuccessFunction = async (req, res) => {
     return res.status(400).send('Missing transaction reference or ID.');
   }
 
-  // ✅ Fallback if session was cleared
+  // Fallback if session was cleared
   if (!req.session.userData) {
     return res.render('users/thankyouPage', {
       tx_ref,
@@ -110,7 +105,6 @@ exports.cartSuccessFunction = async (req, res) => {
   }
 
   try {
-    // ✅ Prevent repeated processing
     if (req.session.lastProcessedTxRef === tx_ref) {
       return res.render('users/thankyouPage', {
         tx_ref,
@@ -123,6 +117,7 @@ exports.cartSuccessFunction = async (req, res) => {
     }
 
     const result = await flw.Transaction.verify({ id: transaction_id });
+
     if (!result || result.data.status !== 'successful') {
       return res.redirect('/cart?paid=false');
     }
@@ -134,7 +129,10 @@ exports.cartSuccessFunction = async (req, res) => {
     const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
     const dbUser = rows[0] || {};
 
-    const customerName = dbUser.firstname && dbUser.lastname ? `${dbUser.firstname} ${dbUser.lastname}` : dbUser.username || userSession.username || 'Guest';
+    const customerName = dbUser.firstname && dbUser.lastname
+      ? `${dbUser.firstname} ${dbUser.lastname}`
+      : dbUser.username || userSession.username || 'Guest';
+
     const customerEmail = dbUser.email || userSession.email || 'not@provided.com';
     const customerPhone = dbUser.phone || userSession.phone || 'N/A';
     const customerFirstName = dbUser.firstname || customerName.split(' ')[0];
@@ -159,7 +157,6 @@ exports.cartSuccessFunction = async (req, res) => {
 
     req.session.cart = [];
 
-    // === Notifications
     const userNotifId = await createNotification(
       'Order Confirmed',
       `Hi ${customerFirstName}, your order has been received and is being processed.`,
@@ -213,7 +210,6 @@ exports.cartSuccessFunction = async (req, res) => {
       });
     }
 
-    // ✅ Store values to prevent reprocessing
     req.session.lastProcessedTxRef = tx_ref;
     req.session.lastProcessedAmount = amount;
     req.session.lastProcessedName = customerName;

@@ -39,24 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const { tx_ref, amount } = response.data;
 
       console.log("Checkout response:", response.data); 
-      
-      FlutterwaveCheckout({
-        public_key: publicKey,
-        tx_ref,
-        amount,
-        currency: "BGN",
-        payment_options: "card,banktransfer",
-        redirect_url: `${host}/checkout/success`,
-        customer: {
-          email: user.email,
-          name: user.name,
-        },
-        customizations: {
-          title: "9jafrozenfoods",
-          description: "Payment for items in cart",
-          logo: "/images/ff-logo-1.png",
-        }
-      });
+              
+        FlutterwaveCheckout({
+          public_key: publicKey,
+          tx_ref,
+          amount,
+          currency: "BGN",
+          payment_options: "card,banktransfer",
+          redirect_url: window.location.origin + "/checkout/success",
+          customer: {
+            email: user.email,
+            name: user.name,
+          },
+          customizations: {
+            title: "9jafrozenfoods",
+            description: "Payment for items in cart",
+            logo: "/images/ff-logo-1.png",
+          }
+        });
+
 
       // Clear localStorage after initiating payment
       localStorage.removeItem('productsInCart');
