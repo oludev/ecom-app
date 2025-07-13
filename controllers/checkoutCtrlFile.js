@@ -70,8 +70,7 @@ exports.checkoutCtrlFunction = async (req, res) => {
     }
     req.session.cart = enrichedCart;
 
-    // ✅ Fix double slash
-    const redirectUrl = "https://localhost:3000/checkout/success" || "https://ecom-app-42zd.onrender.com/checkout/success";
+    const redirectUrl = "https://ecom-app-42zd.onrender.com/checkout/success";
 
     return res.status(200).json({
       tx_ref,
