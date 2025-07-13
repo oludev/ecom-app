@@ -23,6 +23,17 @@ var validation = Array.prototype.filter.call(forms, function(form) {
 })();
 
 
+  const pass = document.querySelector('#password');
+  const btn = document.querySelector('#togglePassword');
+
+  if (btn && pass) {
+    btn.addEventListener('click', () => {
+      const isText = pass.type === 'text';
+      pass.type = isText ? 'password' : 'text';
+      btn.textContent = isText ? 'visibility_off' : 'visibility';
+    });
+  }
+
 $("#forgot-password-form").validate({
   rules: {
     fp_email: "required",
@@ -46,18 +57,6 @@ $("#forgot-password-form").submit(function() {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const pass = document.querySelector('#password');
-  const btn = document.querySelector('#togglePassword');
-
-  if (btn && pass) {
-    btn.addEventListener('click', () => {
-      const isText = pass.type === 'text';
-      pass.type = isText ? 'password' : 'text';
-      btn.textContent = isText ? 'visibility_off' : 'visibility';
-    });
-  }
-});
 
 function myFunction() {
   // Declare variables
@@ -176,6 +175,10 @@ document.getElementById('forgot-password-form').addEventListener('submit', async
     });
   });
 });
+
+
+
+
 
 
 $(document).ready(function () {
