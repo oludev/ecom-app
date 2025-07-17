@@ -89,22 +89,42 @@ exports.cartSuccessFunction = async (req, res) => {
   const { tx_ref, transaction_id } = req.query;
 
   if (!tx_ref || !transaction_id) {
+    console.warn('Missing tx_ref or transaction_id in query');
     return res.status(400).send('Missing transaction reference or ID.');
   }
 
-  // Fallback if session was cleared
-  if (!req.session.userData) {
-    return res.render('users/thankyouPage', {
-      tx_ref,
-      amount: 0,
-      customer_name: "Customer",
-      customer_email: "unknown@user.com",
-      customer_phone: "N/A",
-      user: null
-    });
-  }
-
   try {
+    const result = await flw.Transaction.verify({ id: transaction_id });
+
+    // If the payment failed
+    if (!result || result.data.status !== 'successful') {
+      console.warn('Transaction not successful:', result?.data?.status);
+      return res.redirect('/cart?paid=false');
+    }
+
+    // Rebuild user info in case session was lost
+    let userId = req.session?.userData?.id;
+
+    // If session is lost, recover from DB using email
+    if (!userId && result.data.customer?.email) {
+      const [userMatch] = await db.query('SELECT * FROM users WHERE email = ?', [result.data.customer.email]);
+      if (userMatch.length) {
+        req.session.userData = userMatch[0];
+        userId = userMatch[0].id;
+      }
+    }
+
+    // Handle final fallback if user not found
+    const fallbackUser = {
+      id: null,
+      name: result.data.customer?.name || 'Customer',
+      email: result.data.customer?.email || 'unknown@user.com',
+      phone: result.data.customer?.phone || 'N/A'
+    };
+
+    const userData = req.session.userData || fallbackUser;
+
+    // Prevent repeated processing
     if (req.session.lastProcessedTxRef === tx_ref) {
       return res.render('users/thankyouPage', {
         tx_ref,
@@ -116,117 +136,89 @@ exports.cartSuccessFunction = async (req, res) => {
       });
     }
 
-    const result = await flw.Transaction.verify({ id: transaction_id });
-
-    if (!result || result.data.status !== 'successful') {
-      return res.redirect('/cart?paid=false');
-    }
-
-    const io = req.app.get('io');
-    const userSession = req.session.userData || {};
-    const userId = userSession.id;
-
-    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-    const dbUser = rows[0] || {};
-
-    const customerName = dbUser.firstname && dbUser.lastname
-      ? `${dbUser.firstname} ${dbUser.lastname}`
-      : dbUser.username || userSession.username || 'Guest';
-
-    const customerEmail = dbUser.email || userSession.email || 'not@provided.com';
-    const customerPhone = dbUser.phone || userSession.phone || 'N/A';
-    const customerFirstName = dbUser.firstname || customerName.split(' ')[0];
     const amount = result.data.amount;
+    const transactionExists = await db.query(
+      'SELECT id FROM transactions WHERE transaction_id = ?', [transaction_id]
+    );
 
-    const [existingTx] = await db.query('SELECT * FROM transactions WHERE transaction_id = ?', [transaction_id]);
-    if (existingTx.length === 0) {
+    if (!transactionExists[0].length) {
       await db.query(
-        'INSERT INTO transactions (tx_ref, transaction_id, customer_name, customer_phone, customer_email, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [tx_ref, transaction_id, customerName, customerPhone, customerEmail, amount, 'successful']
+        `INSERT INTO transactions (tx_ref, transaction_id, customer_name, customer_phone, customer_email, amount, status)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [tx_ref, transaction_id, userData.name, userData.phone, userData.email, amount, 'successful']
       );
     }
 
     const cartItems = req.session.cart || [];
     const productSummary = cartItems.map(item => `${item.inCart} ${item.name}`).join(', ') || 'No items';
 
+    // Insert order if not already in db
     await db.query(
       `INSERT INTO orders (user_id, customer_name, customer_phone, customer_email, products, transaction_id, transaction_ref, amount, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [userId, customerName, customerPhone, customerEmail, productSummary, transaction_id, tx_ref, amount, 'confirmed']
+      [userData.id, userData.name, userData.phone, userData.email, productSummary, transaction_id, tx_ref, amount, 'confirmed']
     );
 
     req.session.cart = [];
 
+    // Notifications
     const userNotifId = await createNotification(
       'Order Confirmed',
-      `Hi ${customerFirstName}, your order has been received and is being processed.`,
+      `Hi ${userData.name.split(' ')[0]}, your order has been received and is being processed.`,
       'order',
-      userId,
+      userData.id,
       'user'
     );
 
     const adminNotifId = await createNotification(
       'New Order Received',
-      `${customerFirstName} placed an order for ${productSummary}.`,
+      `${userData.name} placed an order for ${productSummary}.`,
       'order',
       null,
       'admin'
     );
 
-    const updatedUserUnreadCount = await getUnreadCountForUser(userId);
-    req.session.userData.unreadCount = updatedUserUnreadCount;
+    // Update unread counts
+    const unreadUser = userData.id ? await getUnreadCountForUser(userData.id) : 0;
+    const unreadAdmin = await getUnreadCountForAdmin();
 
-    const updatedAdminUnreadCount = await getUnreadCountForAdmin();
-    if (req.session.admin) {
-      req.session.admin.unreadCount = updatedAdminUnreadCount;
-    }
-
-    await sendUserReceipt({
-      toEmail: customerEmail,
-      logoUrl: '../images/ff-logo.png',
-      name: customerFirstName,
-      orderItems: cartItems.map(item => ({
-        name: item.name,
-        quantity: item.inCart,
-        price: item.price
-      })),
-      amount,
-      tx_ref
-    });
-
+    const io = req.app.get('io');
     if (io) {
-      io.emit(`notification_user_${userId}`, {
-        title: 'Order Confirmed',
-        message: `Hi ${customerFirstName}, your order has been received.`,
-        id: userNotifId,
-        unreadCount: updatedUserUnreadCount
-      });
+      if (userData.id) {
+        io.emit(`notification_user_${userData.id}`, {
+          title: 'Order Confirmed',
+          message: `Hi ${userData.name.split(' ')[0]}, your order has been received.`,
+          id: userNotifId,
+          unreadCount: unreadUser
+        });
+      }
 
       io.emit('notification_admin', {
         title: 'New Order Received',
-        message: `${customerFirstName} placed an order for ${productSummary}.`,
+        message: `${userData.name} placed an order.`,
         id: adminNotifId,
-        unreadCount: updatedAdminUnreadCount
+        unreadCount: unreadAdmin
       });
     }
 
+    // Save for re-render
     req.session.lastProcessedTxRef = tx_ref;
     req.session.lastProcessedAmount = amount;
-    req.session.lastProcessedName = customerName;
-    req.session.lastProcessedEmail = customerEmail;
-    req.session.lastProcessedPhone = customerPhone;
+    req.session.lastProcessedName = userData.name;
+    req.session.lastProcessedEmail = userData.email;
+    req.session.lastProcessedPhone = userData.phone;
 
     return res.render('users/thankyouPage', {
       tx_ref,
       amount,
-      customer_name: customerName,
-      customer_email: customerEmail,
-      customer_phone: customerPhone,
-      user: req.session.userData
+      customer_name: userData.name,
+      customer_email: userData.email,
+      customer_phone: userData.phone,
+      user: req.session.userData || null
     });
 
   } catch (err) {
-    console.error('Verification Error:', err.message || err);
+    console.error('Transaction verification failed:', err.message || err);
     return res.redirect('/cart?paid=false');
   }
 };
