@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
           amount,
           currency: "BGN",
           payment_options: "card,banktransfer",
-          redirect_url: window.location.origin + "/checkout/success",
+          redirect_url: `${window.location.origin}/checkout/success`,
           customer: {
             email: user.email,
             name: user.name,
