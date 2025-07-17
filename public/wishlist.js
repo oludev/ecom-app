@@ -22,7 +22,7 @@ function displayWishlist() {
 
   Object.values(wishlistItems).forEach(item => {
     wishlistContainer.innerHTML += `
-      <div class="wishlist-item d-flex card m-3 flex-row justify-content-center align-items-center border-bottom py-3">
+      <div class="wishlist-item d-flex card m-3 flex-row justify-content-center align-items-center border-bottom py-3 px-3">
         <div class=" justify-content-between w-50 align-items-center gap-3">
           <img src="${item.image}" alt="${item.name}" width="80" height="80">
           <div class="align-items-center ">
